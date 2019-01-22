@@ -449,6 +449,12 @@ class Course(PkSearchableMixin, TimeStampedModel):
     def __str__(self):
         return '{key}: {title}'.format(key=self.key, title=self.title)
 
+    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
+        with transaction.atomic():
+            super(Course, self).save(*args, **kwargs)
+
+        logger.info('Course saved with UUID: %s', self.uuid, exc_info=True)
+
     def clean(self):
         # We need to populate the value with 0 - model blank and null definitions are to validate the admin form.
         if self.enrollment_count is None:
@@ -960,7 +966,7 @@ class CourseEntitlement(TimeStampedModel):
     mode = models.ForeignKey(SeatType)
     partner = models.ForeignKey(Partner, null=True, blank=False)
     price = models.DecimalField(**PRICE_FIELD_CONFIG)
-    currency = models.ForeignKey(Currency)
+    currency = models.ForeignKey(Currency, default='USD')
     sku = models.CharField(max_length=128, null=True, blank=True)
     expires = models.DateTimeField(null=True, blank=True)
 
