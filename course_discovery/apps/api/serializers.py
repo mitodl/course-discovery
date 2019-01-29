@@ -913,6 +913,7 @@ class DegreeSerializer(serializers.ModelSerializer):
     title_background_image = serializers.ImageField()
     costs = DegreeCostSerializer(many=True)
     curriculum = CurriculumSerializer()
+    curricula = CurriculumSerializer(many=True)
     quick_facts = IconTextPairingSerializer(many=True)
     lead_capture_image = StdImageSerializerField()
     deadlines = DegreeDeadlineSerializer(many=True)
@@ -936,6 +937,7 @@ class MinimalProgramSerializer(serializers.ModelSerializer):
     courses = serializers.SerializerMethodField()
     type = serializers.SlugRelatedField(slug_field='name', queryset=ProgramType.objects.all())
     degree = DegreeSerializer()
+    curricula = CurriculumSerializer(many=True)
 
     @classmethod
     def prefetch_queryset(cls, partner, queryset=None):
