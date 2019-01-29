@@ -9,7 +9,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('course_metadata', '0146_remove_log_queries_switch'),
+        ('course_metadata', '0147_degree_hubspot_lead_capture_form_id'),
     ]
 
     operations = [
